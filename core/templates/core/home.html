@@ -1,0 +1,1519 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+ReviewBoost — AI-Powered Google Review Growth Platform
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    position:relative;
+    overflow:hidden;
+    padding:90px 0 110px;
+}
+
+.hero::before{
+    content:'';
+    position:absolute;
+    width:520px;
+    height:520px;
+    border-radius:50%;
+    background:rgba(124,58,237,.16);
+    top:-220px;
+    right:-120px;
+    filter:blur(90px);
+}
+
+.hero::after{
+    content:'';
+    position:absolute;
+    width:420px;
+    height:420px;
+    border-radius:50%;
+    background:rgba(6,182,212,.10);
+    bottom:-180px;
+    left:-120px;
+    filter:blur(90px);
+}
+
+.hero-grid{
+    position:relative;
+    z-index:2;
+
+    display:grid;
+    grid-template-columns:1.05fr 1fr;
+    gap:70px;
+    align-items:center;
+}
+
+.hero-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+
+    padding:10px 18px;
+
+    border-radius:999px;
+
+    background:rgba(124,58,237,.10);
+    border:1px solid rgba(124,58,237,.20);
+
+    color:#c4b5fd;
+
+    font-size:.82rem;
+    font-weight:600;
+}
+
+.hero-badge-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#8b5cf6;
+    animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+    0%,100%{
+        transform:scale(1);
+        opacity:1;
+    }
+
+    50%{
+        transform:scale(1.4);
+        opacity:.6;
+    }
+}
+
+.hero-left h1{
+    font-size:4.5rem;
+    line-height:1.02;
+    letter-spacing:-3px;
+    font-weight:800;
+
+    margin:24px 0;
+}
+
+.hero-left h1 span{
+    background:linear-gradient(to right,#8b5cf6,#06b6d4);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.hero-left p{
+    font-size:1.06rem;
+    color:#94a3b8;
+    line-height:1.9;
+
+    max-width:620px;
+
+    margin-bottom:34px;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+}
+
+.hero-buttons .btn{
+    min-width:180px;
+}
+
+.hero-trust{
+    margin-top:34px;
+
+    display:flex;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+}
+
+.trust-avatars{
+    display:flex;
+}
+
+.trust-avatars img{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    object-fit:cover;
+
+    border:2px solid #0f172a;
+
+    margin-left:-12px;
+}
+
+.trust-avatars img:first-child{
+    margin-left:0;
+}
+
+.trust-text strong{
+    display:block;
+    font-size:.92rem;
+    margin-bottom:2px;
+}
+
+.trust-text span{
+    color:#94a3b8;
+    font-size:.82rem;
+}
+
+.hero-stats{
+    margin-top:45px;
+
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.hero-stat{
+    padding:22px;
+}
+
+.hero-stat h3{
+    font-size:1.8rem;
+    margin-bottom:6px;
+}
+
+.hero-stat p{
+    margin:0;
+    font-size:.85rem;
+    color:#94a3b8;
+    line-height:1.6;
+}
+
+/* =========================
+   HERO IMAGE
+========================= */
+
+.hero-image{
+    position:relative;
+}
+
+.hero-image img{
+    width:100%;
+    border-radius:30px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+    0 40px 90px rgba(0,0,0,.45);
+}
+
+.hero-overlay{
+    position:absolute;
+    inset:0;
+
+    border-radius:30px;
+
+    background:linear-gradient(
+        135deg,
+        rgba(15,23,42,.45),
+        transparent 60%
+    );
+}
+
+.float-card{
+    position:absolute;
+
+    background:rgba(15,23,42,.92);
+
+    backdrop-filter:blur(16px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:22px;
+
+    padding:18px 20px;
+
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
+}
+
+.float-card.card-1{
+    left:-28px;
+    bottom:-22px;
+    width:230px;
+}
+
+.float-card.card-2{
+    top:-18px;
+    right:-20px;
+    width:190px;
+}
+
+.float-label{
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:#94a3b8;
+
+    margin-bottom:8px;
+}
+
+.float-stars{
+    font-size:1.05rem;
+    margin-bottom:8px;
+}
+
+.float-card p{
+    font-size:.8rem;
+    color:#cbd5e1;
+    line-height:1.6;
+}
+
+.float-number{
+    font-size:2rem;
+    font-weight:800;
+    margin-bottom:6px;
+}
+
+.float-trend{
+    color:#34d399;
+    font-size:.8rem;
+    font-weight:600;
+}
+
+/* =========================
+   BUSINESS TYPES
+========================= */
+
+.business-section{
+    padding:20px 0 10px;
+}
+
+.business-grid{
+    margin-top:40px;
+
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:18px;
+}
+
+.business-card{
+    padding:24px;
+    text-align:center;
+    transition:.3s;
+}
+
+.business-card:hover{
+    transform:translateY(-6px);
+}
+
+.business-icon{
+    font-size:2rem;
+    margin-bottom:12px;
+}
+
+.business-card h3{
+    font-size:1rem;
+    margin-bottom:8px;
+}
+
+.business-card p{
+    font-size:.82rem;
+    color:#94a3b8;
+    line-height:1.6;
+}
+
+/* =========================
+   HOW IT WORKS
+========================= */
+
+.how{
+    padding:110px 0;
+}
+
+.section-head{
+    max-width:760px;
+    margin:auto;
+    text-align:center;
+}
+
+.section-head p{
+    margin-top:18px;
+}
+
+.how-grid{
+    margin-top:60px;
+
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:24px;
+}
+
+.step-card{
+    padding:30px;
+    transition:.3s;
+}
+
+.step-card:hover{
+    transform:translateY(-8px);
+}
+
+.step-number{
+    width:60px;
+    height:60px;
+
+    border-radius:18px;
+
+    background:linear-gradient(135deg,#8b5cf6,#06b6d4);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:1.2rem;
+    font-weight:700;
+
+    margin-bottom:22px;
+}
+
+.step-card h3{
+    margin-bottom:14px;
+}
+
+.step-card p{
+    color:#94a3b8;
+    font-size:.9rem;
+    line-height:1.8;
+}
+
+/* =========================
+   FEATURES
+========================= */
+
+.features{
+    padding:110px 0;
+}
+
+.features-grid{
+    margin-top:60px;
+
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:24px;
+}
+
+.feature-card{
+    padding:28px;
+    transition:.3s;
+}
+
+.feature-card:hover{
+    transform:translateY(-8px);
+}
+
+.feature-icon{
+    width:58px;
+    height:58px;
+
+    border-radius:18px;
+
+    background:rgba(124,58,237,.12);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:1.4rem;
+
+    margin-bottom:22px;
+}
+
+.feature-card h3{
+    margin-bottom:12px;
+}
+
+.feature-card p{
+    color:#94a3b8;
+    line-height:1.8;
+    font-size:.9rem;
+}
+
+/* =========================
+   ANALYTICS
+========================= */
+
+.analytics{
+    padding:110px 0;
+}
+
+.analytics-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:60px;
+    align-items:center;
+}
+
+.analytics-image img{
+    width:100%;
+    border-radius:28px;
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.analytics-content ul{
+    margin-top:28px;
+
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+}
+
+.analytics-content li{
+    list-style:none;
+
+    display:flex;
+    gap:12px;
+
+    color:#cbd5e1;
+    line-height:1.7;
+}
+
+.analytics-content li span{
+    color:#8b5cf6;
+    font-weight:700;
+}
+
+/* =========================
+   TESTIMONIALS
+========================= */
+
+.testimonials{
+    padding:110px 0;
+}
+
+.testimonial-grid{
+    margin-top:60px;
+
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:24px;
+}
+
+.testimonial{
+    padding:28px;
+}
+
+.testimonial-stars{
+    margin-bottom:18px;
+    color:#facc15;
+}
+
+.testimonial p{
+    color:#cbd5e1;
+    line-height:1.9;
+    margin-bottom:24px;
+}
+
+.testimonial-user{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.testimonial-user img{
+    width:52px;
+    height:52px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.testimonial-user h4{
+    font-size:.95rem;
+}
+
+.testimonial-user span{
+    color:#94a3b8;
+    font-size:.8rem;
+}
+
+/* =========================
+   PRICING
+========================= */
+
+.pricing{
+    padding:110px 0;
+}
+
+.pricing-grid{
+    margin-top:60px;
+
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:26px;
+}
+
+.plan{
+    padding:36px 30px;
+    position:relative;
+    transition:.3s;
+}
+
+.plan:hover{
+    transform:translateY(-8px);
+}
+
+.plan.popular{
+    border:1px solid rgba(139,92,246,.55);
+    box-shadow:0 0 0 1px rgba(139,92,246,.2);
+}
+
+.popular-tag{
+    position:absolute;
+    top:-14px;
+    left:50%;
+    transform:translateX(-50%);
+
+    background:linear-gradient(to right,#8b5cf6,#06b6d4);
+
+    color:#fff;
+
+    padding:8px 18px;
+    border-radius:999px;
+
+    font-size:.72rem;
+    font-weight:700;
+}
+
+.plan-name{
+    font-size:.9rem;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+
+    color:#94a3b8;
+
+    margin-bottom:14px;
+}
+
+.plan-price{
+    font-size:3rem;
+    font-weight:800;
+    margin-bottom:8px;
+}
+
+.plan-price span{
+    font-size:1rem;
+    color:#94a3b8;
+}
+
+.plan-desc{
+    color:#94a3b8;
+    line-height:1.7;
+
+    margin-bottom:26px;
+}
+
+.plan-features{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+
+    margin-bottom:30px;
+}
+
+.plan-features li{
+    list-style:none;
+
+    display:flex;
+    gap:12px;
+
+    color:#cbd5e1;
+    font-size:.92rem;
+}
+
+.plan-features li span{
+    color:#34d399;
+    font-weight:700;
+}
+
+/* =========================
+   CTA
+========================= */
+
+.cta{
+    padding:40px 0 80px;
+}
+
+.cta-card{
+    position:relative;
+    overflow:hidden;
+
+    padding:80px 60px;
+    text-align:center;
+}
+
+.cta-card::before{
+    content:'';
+    position:absolute;
+
+    width:450px;
+    height:450px;
+
+    border-radius:50%;
+
+    background:rgba(124,58,237,.18);
+
+    top:-220px;
+    right:-120px;
+
+    filter:blur(80px);
+}
+
+.cta-card h2{
+    position:relative;
+    z-index:2;
+}
+
+.cta-card p{
+    position:relative;
+    z-index:2;
+
+    max-width:720px;
+
+    margin:24px auto 34px;
+}
+
+.cta-actions{
+    position:relative;
+    z-index:2;
+
+    display:flex;
+    justify-content:center;
+    gap:18px;
+    flex-wrap:wrap;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1100px){
+
+    .features-grid,
+    .testimonial-grid,
+    .pricing-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .how-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .business-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+}
+
+@media(max-width:900px){
+
+    .hero-grid,
+    .analytics-grid{
+        grid-template-columns:1fr;
+    }
+
+    .hero-left{
+        text-align:center;
+    }
+
+    .hero-left p{
+        margin:auto auto 34px;
+    }
+
+    .hero-buttons,
+    .hero-trust{
+        justify-content:center;
+    }
+
+    .hero-stats{
+        grid-template-columns:1fr;
+    }
+
+    .float-card.card-1,
+    .float-card.card-2{
+        position:relative;
+        width:100%;
+        left:0;
+        right:0;
+        top:0;
+        bottom:0;
+
+        margin-top:18px;
+    }
+
+    .hero-left h1{
+        font-size:3.3rem;
+    }
+
+}
+
+@media(max-width:700px){
+
+    .features-grid,
+    .testimonial-grid,
+    .pricing-grid,
+    .how-grid,
+    .business-grid{
+        grid-template-columns:1fr;
+    }
+
+    .hero{
+        padding:70px 0 90px;
+    }
+
+    .hero-left h1{
+        font-size:2.5rem;
+        letter-spacing:-2px;
+    }
+
+    .cta-card{
+        padding:50px 24px;
+    }
+
+}
+
+</style>
+
+<!-- =========================
+HERO
+========================= -->
+
+<section class="hero">
+
+<div class="container">
+
+<div class="hero-grid">
+
+<div class="hero-left" data-aos="fade-up">
+
+<div class="hero-badge">
+<div class="hero-badge-dot"></div>
+India’s AI-powered Google review platform
+</div>
+
+<h1>
+Get More
+<span>5-Star Google Reviews</span>
+Without Asking Twice.
+</h1>
+
+<p>
+ReviewBoost helps restaurants, salons, clinics, gyms, cafes and local businesses increase Google reviews using AI-generated review suggestions, QR review flows and one-tap posting experiences.
+</p>
+
+<div class="hero-buttons">
+
+<a href="/signup/" class="btn btn-primary">
+Start Free Trial
+</a>
+
+<a href="#how" class="btn btn-outline">
+See How It Works
+</a>
+
+</div>
+
+<div class="hero-trust">
+
+<div class="trust-avatars">
+
+<img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100" alt="">
+<img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" alt="">
+<img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100" alt="">
+<img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100" alt="">
+
+</div>
+
+<div class="trust-text">
+<strong>500+ Indian businesses</strong>
+<span>Already growing with ReviewBoost</span>
+</div>
+
+</div>
+
+<div class="hero-stats">
+
+<div class="card hero-stat">
+<h3>10×</h3>
+<p>More review conversions compared to manual asking</p>
+</div>
+
+<div class="card hero-stat">
+<h3>30s</h3>
+<p>Average scan-to-review completion flow</p>
+</div>
+
+<div class="card hero-stat">
+<h3>₹299</h3>
+<p>Affordable pricing built for Indian SMBs</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="hero-image" data-aos="zoom-in">
+
+<img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1400&auto=format&fit=crop" alt="ReviewBoost Dashboard">
+
+<div class="hero-overlay"></div>
+
+<div class="float-card card-1">
+
+<div class="float-label">
+New Google Review
+</div>
+
+<div class="float-stars">
+⭐⭐⭐⭐⭐
+</div>
+
+<p>
+“Absolutely loved the experience. Staff was very polite and service was amazing.”
+</p>
+
+</div>
+
+<div class="float-card card-2">
+
+<div class="float-label">
+This Week
+</div>
+
+<div class="float-number">
++28★
+</div>
+
+<div class="float-trend">
+↑ 40% growth vs last week
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =========================
+BUSINESS TYPES
+========================= -->
+
+<section class="business-section">
+
+<div class="container">
+
+<div class="section-head">
+
+<div class="badge">
+Built For Local Businesses
+</div>
+
+<h2 class="section-title">
+Perfect for every customer-facing business
+</h2>
+
+<p class="section-sub">
+Designed for Indian SMBs that depend on trust, visibility and Google Maps ranking.
+</p>
+
+</div>
+
+<div class="business-grid">
+
+<div class="card business-card">
+<div class="business-icon">🍽️</div>
+<h3>Restaurants</h3>
+<p>Increase Google Maps visibility and attract more diners.</p>
+</div>
+
+<div class="card business-card">
+<div class="business-icon">💇</div>
+<h3>Salons</h3>
+<p>Build trust and get more appointments through reviews.</p>
+</div>
+
+<div class="card business-card">
+<div class="business-icon">🏥</div>
+<h3>Clinics</h3>
+<p>Strengthen patient confidence with authentic feedback.</p>
+</div>
+
+<div class="card business-card">
+<div class="business-icon">🏋️</div>
+<h3>Gyms</h3>
+<p>Boost memberships with better online reputation.</p>
+</div>
+
+<div class="card business-card">
+<div class="business-icon">🛍️</div>
+<h3>Retail Stores</h3>
+<p>Convert walk-ins into repeat customers using trust.</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =========================
+HOW IT WORKS
+========================= -->
+
+<section class="how" id="how">
+
+<div class="container">
+
+<div class="section-head">
+
+<div class="badge">
+Simple Workflow
+</div>
+
+<h2 class="section-title">
+From QR scan to Google review in seconds
+</h2>
+
+<p class="section-sub">
+Launch your AI review system in minutes with zero technical setup.
+</p>
+
+</div>
+
+<div class="how-grid">
+
+<div class="card step-card">
+
+<div class="step-number">
+1
+</div>
+
+<h3>
+Generate QR Code
+</h3>
+
+<p>
+Create branded QR codes for each business location directly from your dashboard.
+</p>
+
+</div>
+
+<div class="card step-card">
+
+<div class="step-number">
+2
+</div>
+
+<h3>
+Customer Scans
+</h3>
+
+<p>
+Customers scan the QR with their phone camera and instantly enter the review flow.
+</p>
+
+</div>
+
+<div class="card step-card">
+
+<div class="step-number">
+3
+</div>
+
+<h3>
+AI Writes Review
+</h3>
+
+<p>
+Based on star rating, AI generates ready-to-post review suggestions automatically.
+</p>
+
+</div>
+
+<div class="card step-card">
+
+<div class="step-number">
+4
+</div>
+
+<h3>
+Post On Google
+</h3>
+
+<p>
+Customer selects a review and Google Maps opens for instant posting.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =========================
+FEATURES
+========================= -->
+
+<section class="features">
+
+<div class="container">
+
+<div class="section-head">
+
+<div class="badge">
+Platform Features
+</div>
+
+<h2 class="section-title">
+Everything needed to grow your reputation
+</h2>
+
+<p class="section-sub">
+Built with AI automation, analytics and multi-location management for modern businesses.
+</p>
+
+</div>
+
+<div class="features-grid">
+
+<div class="card feature-card">
+
+<div class="feature-icon">
+🤖
+</div>
+
+<h3>
+AI Review Suggestions
+</h3>
+
+<p>
+Generate natural, varied and authentic review suggestions based on customer feedback and star rating.
+</p>
+
+</div>
+
+<div class="card feature-card">
+
+<div class="feature-icon">
+📊
+</div>
+
+<h3>
+Analytics Dashboard
+</h3>
+
+<p>
+Track QR scans, review conversions, ratings and customer engagement from a real-time dashboard.
+</p>
+
+</div>
+
+<div class="card feature-card">
+
+<div class="feature-icon">
+📍
+</div>
+
+<h3>
+Multi-Location Management
+</h3>
+
+<p>
+Manage all locations, review links and analytics from one centralized admin panel.
+</p>
+
+</div>
+
+<div class="card feature-card">
+
+<div class="feature-icon">
+⚡
+</div>
+
+<h3>
+Fast Mobile Experience
+</h3>
+
+<p>
+Customers can complete the review flow in under 30 seconds without downloading any app.
+</p>
+
+</div>
+
+<div class="card feature-card">
+
+<div class="feature-icon">
+🔒
+</div>
+
+<h3>
+Direct Google Posting
+</h3>
+
+<p>
+Reviews are posted directly on Google by real customers. No fake reviews or risky automation.
+</p>
+
+</div>
+
+<div class="card feature-card">
+
+<div class="feature-icon">
+🎨
+</div>
+
+<h3>
+Custom Branding
+</h3>
+
+<p>
+Add your logo, business name and branding to QR pages for a premium customer experience.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =========================
+ANALYTICS
+========================= -->
+
+<section class="analytics">
+
+<div class="container">
+
+<div class="analytics-grid">
+
+<div class="analytics-image" data-aos="fade-right">
+
+<img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1400&auto=format&fit=crop" alt="Analytics Dashboard">
+
+</div>
+
+<div class="analytics-content" data-aos="fade-left">
+
+<div class="badge">
+Growth Analytics
+</div>
+
+<h2 class="section-title">
+Track every scan, review and conversion
+</h2>
+
+<p class="section-sub" style="margin-top:20px">
+Understand how customers interact with your review system using detailed analytics and reporting.
+</p>
+
+<ul>
+
+<li>
+<span>✓</span>
+Monitor QR scans and customer activity in real time
+</li>
+
+<li>
+<span>✓</span>
+Track review conversion rates across locations
+</li>
+
+<li>
+<span>✓</span>
+Analyze customer rating trends and engagement
+</li>
+
+<li>
+<span>✓</span>
+Compare performance between multiple branches
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =========================
+TESTIMONIALS
+========================= -->
+
+<section class="testimonials">
+
+<div class="container">
+
+<div class="section-head">
+
+<div class="badge">
+Customer Success
+</div>
+
+<h2 class="section-title">
+Businesses seeing real growth with ReviewBoost
+</h2>
+
+<p class="section-sub">
+From restaurants to clinics, businesses are increasing reviews and trust faster than ever.
+</p>
+
+</div>
+
+<div class="testimonial-grid">
+
+<div class="card testimonial">
+
+<div class="testimonial-stars">
+★★★★★
+</div>
+
+<p>
+“We increased from 24 Google reviews to 210 reviews in just 2 months. Our restaurant now ranks much higher on Maps.”
+</p>
+
+<div class="testimonial-user">
+
+<img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100" alt="">
+
+<div>
+<h4>Rahul Sharma</h4>
+<span>Restaurant Owner</span>
+</div>
+
+</div>
+
+</div>
+
+<div class="card testimonial">
+
+<div class="testimonial-stars">
+★★★★★
+</div>
+
+<p>
+“Customers love how simple the review process is. We started getting more salon bookings within weeks.”
+</p>
+
+<div class="testimonial-user">
+
+<img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" alt="">
+
+<div>
+<h4>Priya Nair</h4>
+<span>Salon Founder</span>
+</div>
+
+</div>
+
+</div>
+
+<div class="card testimonial">
+
+<div class="testimonial-stars">
+★★★★★
+</div>
+
+<p>
+“ReviewBoost helped our clinic build strong online trust and attract new patients consistently every month.”
+</p>
+
+<div class="testimonial-user">
+
+<img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100" alt="">
+
+<div>
+<h4>Dr. Mehta</h4>
+<span>Clinic Owner</span>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =========================
+PRICING
+========================= -->
+
+<section class="pricing" id="pricing">
+
+<div class="container">
+
+<div class="section-head">
+
+<div class="badge">
+Simple Pricing
+</div>
+
+<h2 class="section-title">
+Affordable pricing for every business size
+</h2>
+
+<p class="section-sub">
+No hidden fees. No per-review charges. Cancel anytime.
+</p>
+
+</div>
+
+<div class="pricing-grid">
+
+<div class="card plan">
+
+<div class="plan-name">
+Starter
+</div>
+
+<div class="plan-price">
+₹299 <span>/ month</span>
+</div>
+
+<p class="plan-desc">
+Perfect for single-location businesses and startups.
+</p>
+
+<ul class="plan-features">
+
+<li><span>✓</span>1 QR code</li>
+<li><span>✓</span>AI review generation</li>
+<li><span>✓</span>Basic analytics</li>
+<li><span>✓</span>Email support</li>
+
+</ul>
+
+<a href="/signup/" class="btn btn-outline w-100">
+Get Started
+</a>
+
+</div>
+
+<div class="card plan popular">
+
+<div class="popular-tag">
+Most Popular
+</div>
+
+<div class="plan-name">
+Growth
+</div>
+
+<div class="plan-price">
+₹599 <span>/ month</span>
+</div>
+
+<p class="plan-desc">
+Best for restaurants, salons and growing businesses.
+</p>
+
+<ul class="plan-features">
+
+<li><span>✓</span>3 business locations</li>
+<li><span>✓</span>Advanced analytics</li>
+<li><span>✓</span>Priority AI generation</li>
+<li><span>✓</span>WhatsApp support</li>
+
+</ul>
+
+<a href="/signup/" class="btn btn-primary w-100">
+Start Free Trial
+</a>
+
+</div>
+
+<div class="card plan">
+
+<div class="plan-name">
+Enterprise
+</div>
+
+<div class="plan-price">
+₹999 <span>/ month</span>
+</div>
+
+<p class="plan-desc">
+Built for chains, franchises and multi-location brands.
+</p>
+
+<ul class="plan-features">
+
+<li><span>✓</span>Unlimited locations</li>
+<li><span>✓</span>Team access</li>
+<li><span>✓</span>Priority support</li>
+<li><span>✓</span>Custom branding</li>
+
+</ul>
+
+<a href="/signup/" class="btn btn-outline w-100">
+Contact Sales
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =========================
+CTA
+========================= -->
+
+<section class="cta">
+
+<div class="container">
+
+<div class="card cta-card">
+
+<div class="badge">
+Start Growing Today
+</div>
+
+<h2 class="section-title">
+Ready to dominate your Google Maps rankings?
+</h2>
+
+<p class="section-sub">
+Join modern Indian businesses using ReviewBoost to increase customer trust, visibility and Google reviews with AI-powered automation.
+</p>
+
+<div class="cta-actions">
+
+<a href="/signup/" class="btn btn-primary">
+Create Free Account
+</a>
+
+<a href="/login/" class="btn btn-outline">
+Login Dashboard
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}

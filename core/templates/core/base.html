@@ -1,0 +1,630 @@
+{% comment %} {% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}ReviewBoost{% endblock %}</title>
+{% load static %}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+:root {
+  --ink:#0f0e0d; --ink2:#3a3835; --ink3:#7a7672;
+  --paper:#faf9f7; --paper2:#f0ede8; --paper3:#e5e0d8;
+  --gold:#c8922a; --gold-light:#f5e6c8; --gold-dark:#9a6e1e;
+  --green:#1a6b3c; --green-light:#d4edde;
+  --red:#c0392b; --red-light:#fde8e6;
+  --radius:12px; --radius-sm:8px;
+  --shadow:0 2px 8px rgba(15,14,13,0.08);
+  --shadow-lg:0 8px 32px rgba(15,14,13,0.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;-webkit-font-smoothing:antialiased}
+body{font-family:'Sora',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:inherit}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--paper3);background:var(--paper);position:sticky;top:0;z-index:100}
+.nav-logo{font-weight:700;font-size:1.15rem;letter-spacing:-0.02em}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;align-items:center;gap:1.5rem;font-size:0.875rem}
+.nav-links a:hover{color:var(--gold)}
+.btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.6rem 1.25rem;border-radius:var(--radius-sm);font-size:0.875rem;font-weight:500;border:none;transition:all 0.18s}
+.btn-gold{background:var(--gold);color:#fff} .btn-gold:hover{background:var(--gold-dark)}
+.btn-outline{background:transparent;color:var(--ink);border:1.5px solid var(--paper3)} .btn-outline:hover{border-color:var(--ink3)}
+.btn-lg{padding:0.85rem 2rem;font-size:1rem;border-radius:var(--radius)}
+.badge{display:inline-block;padding:0.2rem 0.65rem;border-radius:100px;font-size:0.75rem;font-weight:500}
+.badge-gold{background:var(--gold-light);color:var(--gold-dark)}
+.card{background:#fff;border:1px solid var(--paper3);border-radius:var(--radius);padding:1.5rem;box-shadow:var(--shadow)}
+input,select,textarea{width:100%;padding:0.7rem 1rem;border:1.5px solid var(--paper3);border-radius:var(--radius-sm);font-family:inherit;font-size:0.9rem;background:#fff;color:var(--ink);transition:border-color 0.15s;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+label{display:block;font-size:0.8rem;font-weight:500;color:var(--ink2);margin-bottom:0.4rem}
+.form-group{margin-bottom:1.25rem}
+.msg-error{background:var(--red-light);color:var(--red);padding:0.75rem 1rem;border-radius:var(--radius-sm);font-size:0.875rem;margin-bottom:1rem}
+.container{max-width:1100px;margin:0 auto;padding:0 1.5rem}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="/" class="nav-logo">Review<span>Boost</span></a>
+  <div class="nav-links">
+    {% if user.is_authenticated %}
+      <a href="/dashboard/">Dashboard</a>
+      <a href="/logout/" class="btn btn-outline">Logout</a>
+    {% else %}
+      <a href="/login/">Login</a>
+      <a href="/signup/" class="btn btn-gold">Get Started</a>
+    {% endif %}
+  </div>
+</nav>
+{% block content %}{% endblock %}
+</body>
+</html> {% endcomment %}
+{% comment %} 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}ReviewBoost{% endblock %}</title>
+{% load static %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0a0908;
+  --ink2: #2d2b29;
+  --ink3: #6b6560;
+  --ink4: #a09a93;
+  --paper: #fdfcfb;
+  --paper2: #f5f2ee;
+  --paper3: #ece7e0;
+  --paper4: #e0d9cf;
+  --amber: #d4841a;
+  --amber-light: #fef3e2;
+  --amber-mid: #f5c76a;
+  --amber-dark: #a5620e;
+  --emerald: #166534;
+  --emerald-light: #dcfce7;
+  --ruby: #be123c;
+  --ruby-light: #ffe4e6;
+  --r: 14px;
+  --r-sm: 8px;
+  --r-lg: 20px;
+  --shadow-sm: 0 1px 3px rgba(10,9,8,0.06), 0 1px 2px rgba(10,9,8,0.04);
+  --shadow: 0 4px 12px rgba(10,9,8,0.08), 0 2px 4px rgba(10,9,8,0.04);
+  --shadow-lg: 0 20px 60px rgba(10,9,8,0.12), 0 8px 24px rgba(10,9,8,0.06);
+  --shadow-xl: 0 32px 80px rgba(10,9,8,0.16), 0 16px 40px rgba(10,9,8,0.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--paper); color: var(--ink); line-height: 1.6; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font-family: inherit; }
+img { max-width: 100%; display: block; }
+
+/* NAV */
+.nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2.5rem; height: 68px;
+  background: rgba(253,252,251,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--paper3);
+  position: sticky; top: 0; z-index: 200;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 0.55rem;
+  font-family: 'Playfair Display', serif;
+  font-weight: 800; font-size: 1.35rem; letter-spacing: -0.01em; color: var(--ink);
+}
+.nav-logo-icon {
+  width: 32px; height: 32px; background: var(--amber);
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem;
+}
+.nav-logo span { color: var(--amber); }
+.nav-center { display: flex; align-items: center; gap: 0.25rem; }
+.nav-link {
+  padding: 0.4rem 0.85rem; border-radius: 8px;
+  font-size: 0.875rem; font-weight: 500; color: var(--ink3);
+  transition: all 0.15s;
+}
+.nav-link:hover { background: var(--paper2); color: var(--ink); }
+.nav-actions { display: flex; align-items: center; gap: 0.75rem; }
+
+/* BUTTONS */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+  padding: 0.6rem 1.35rem; border-radius: var(--r-sm);
+  font-size: 0.875rem; font-weight: 600; border: none;
+  transition: all 0.18s; cursor: pointer; font-family: inherit; white-space: nowrap;
+}
+.btn-primary {
+  background: var(--amber); color: #fff;
+  box-shadow: 0 2px 8px rgba(212,132,26,0.35);
+}
+.btn-primary:hover { background: var(--amber-dark); box-shadow: 0 4px 16px rgba(212,132,26,0.4); transform: translateY(-1px); }
+.btn-ghost { background: transparent; color: var(--ink2); border: 1.5px solid var(--paper4); }
+.btn-ghost:hover { border-color: var(--ink3); background: var(--paper2); }
+.btn-dark { background: var(--ink); color: #fff; }
+.btn-dark:hover { background: var(--ink2); transform: translateY(-1px); }
+.btn-lg { padding: 0.85rem 2rem; font-size: 0.95rem; border-radius: var(--r); }
+.btn-xl { padding: 1rem 2.5rem; font-size: 1rem; border-radius: var(--r); }
+
+/* BADGES */
+.badge {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  padding: 0.2rem 0.7rem; border-radius: 100px;
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.03em;
+}
+.badge-amber { background: var(--amber-light); color: var(--amber-dark); border: 1px solid #f5c76a55; }
+.badge-emerald { background: var(--emerald-light); color: var(--emerald); }
+
+/* CARDS */
+.card {
+  background: #fff; border: 1px solid var(--paper3);
+  border-radius: var(--r-lg); padding: 1.75rem;
+  box-shadow: var(--shadow);
+}
+
+/* FORMS */
+input, select, textarea {
+  width: 100%; padding: 0.75rem 1rem;
+  border: 1.5px solid var(--paper3);
+  border-radius: var(--r-sm);
+  font-family: inherit; font-size: 0.9rem;
+  background: var(--paper); color: var(--ink);
+  transition: border-color 0.15s, box-shadow 0.15s; outline: none;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px rgba(212,132,26,0.12);
+  background: #fff;
+}
+label {
+  display: block; font-size: 0.8rem; font-weight: 600;
+  color: var(--ink2); margin-bottom: 0.4rem; letter-spacing: 0.01em;
+}
+.form-group { margin-bottom: 1.25rem; }
+.form-help { font-size: 0.76rem; color: var(--ink4); margin-top: 0.35rem; line-height: 1.5; }
+.form-help a { color: var(--amber); font-weight: 500; }
+
+/* ALERTS */
+.alert {
+  padding: 0.85rem 1.1rem; border-radius: var(--r-sm);
+  font-size: 0.875rem; margin-bottom: 1.25rem; display: flex; align-items: flex-start; gap: 0.5rem;
+}
+.alert-error { background: var(--ruby-light); color: var(--ruby); border: 1px solid rgba(190,18,60,0.15); }
+
+/* LAYOUT */
+.container { max-width: 1140px; margin: 0 auto; padding: 0 1.75rem; }
+.container-sm { max-width: 640px; margin: 0 auto; padding: 0 1.75rem; }
+
+/* SECTION LABEL */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--amber-dark); margin-bottom: 1rem;
+}
+.eyebrow::before { content: ''; display: block; width: 16px; height: 2px; background: var(--amber); border-radius: 2px; }
+
+/* DIVIDER */
+.divider { height: 1px; background: var(--paper3); margin: 0; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--paper2); }
+::-webkit-scrollbar-thumb { background: var(--paper4); border-radius: 6px; }
+
+/* RESPONSIVE NAV */
+@media (max-width: 768px) {
+  .nav { padding: 0 1.25rem; }
+  .nav-center { display: none; }
+}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="/" class="nav-logo">
+    <div class="nav-logo-icon">⭐</div>
+    Review<span>Boost</span>
+  </a>
+  <div class="nav-center">
+    {% if user.is_authenticated %}
+      <a href="/dashboard/" class="nav-link">Dashboard</a>
+    {% else %}
+      <a href="#how" class="nav-link">How it works</a>
+      <a href="#pricing" class="nav-link">Pricing</a>
+    {% endif %}
+  </div>
+  <div class="nav-actions">
+    {% if user.is_authenticated %}
+      <a href="/logout/" class="btn btn-ghost">Logout</a>
+    {% else %}
+      <a href="/login/" class="btn btn-ghost">Login</a>
+      <a href="/signup/" class="btn btn-primary">Get Started →</a>
+    {% endif %}
+  </div>
+</nav>
+{% block content %}{% endblock %}
+</body>
+</html> {% endcomment %} 
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>{% block title %}ReviewBoost{% endblock %}</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+:root{
+    --bg:#081120;
+    --bg2:#0f172a;
+
+    --card:#111c31;
+    --card2:#16233d;
+
+    --border:#243453;
+
+    --text:#f8fafc;
+    --muted:#94a3b8;
+
+    --primary:#7c3aed;
+    --primary2:#9333ea;
+
+    --accent:#06b6d4;
+
+    --success:#10b981;
+    --danger:#ef4444;
+
+    --radius:22px;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    background:
+    radial-gradient(circle at top left, rgba(124,58,237,.18), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(6,182,212,.15), transparent 28%),
+    linear-gradient(to bottom,var(--bg),var(--bg2));
+
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+img{
+    max-width:100%;
+    display:block;
+}
+
+button{
+    border:none;
+    cursor:pointer;
+    font-family:inherit;
+}
+
+.container{
+    width:min(1180px,92%);
+    margin:auto;
+}
+
+.nav{
+    position:sticky;
+    top:0;
+    z-index:999;
+    backdrop-filter:blur(20px);
+    background:rgba(8,17,32,.72);
+    border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.nav-inner{
+    height:78px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.logo{
+    font-size:1.5rem;
+    font-weight:800;
+    letter-spacing:-1px;
+}
+
+.logo span{
+    background:linear-gradient(to right,#8b5cf6,#06b6d4);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:28px;
+}
+
+.nav-links a{
+    color:#cbd5e1;
+    font-size:.95rem;
+    transition:.25s;
+}
+
+.nav-links a:hover{
+    color:white;
+}
+
+.btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+
+    padding:.95rem 1.45rem;
+
+    border-radius:16px;
+
+    font-size:.95rem;
+    font-weight:600;
+
+    transition:.28s;
+}
+
+.btn-primary{
+    background:linear-gradient(135deg,#7c3aed,#9333ea);
+    color:white;
+
+    box-shadow:
+    0 10px 35px rgba(124,58,237,.4);
+}
+
+.btn-primary:hover{
+    transform:translateY(-3px);
+}
+
+.btn-outline{
+    border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.03);
+    color:white;
+}
+
+.btn-outline:hover{
+    background:rgba(255,255,255,.08);
+}
+
+.card{
+    background:rgba(255,255,255,.04);
+
+    border:1px solid rgba(255,255,255,.06);
+
+    backdrop-filter:blur(16px);
+
+    border-radius:var(--radius);
+}
+
+input,
+select,
+textarea{
+    width:100%;
+
+    padding:1rem 1rem;
+
+    border-radius:16px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    background:rgba(255,255,255,.05);
+
+    color:white;
+
+    outline:none;
+
+    font-size:.95rem;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:#8b5cf6;
+}
+
+input::placeholder,
+textarea::placeholder{
+    color:#64748b;
+}
+
+label{
+    display:block;
+    margin-bottom:.55rem;
+
+    color:#cbd5e1;
+
+    font-size:.9rem;
+    font-weight:500;
+}
+
+.form-group{
+    margin-bottom:1.2rem;
+}
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:.45rem .9rem;
+
+    border-radius:999px;
+
+    background:rgba(124,58,237,.15);
+
+    color:#c4b5fd;
+
+    font-size:.78rem;
+    font-weight:600;
+}
+
+.section-title{
+    font-size:3rem;
+    line-height:1.05;
+
+    font-weight:800;
+
+    letter-spacing:-2px;
+}
+
+.section-sub{
+    color:var(--muted);
+
+    line-height:1.8;
+}
+
+.msg-error{
+    padding:14px;
+
+    background:rgba(239,68,68,.12);
+
+    border:1px solid rgba(239,68,68,.2);
+
+    border-radius:16px;
+
+    color:#fecaca;
+
+    margin-bottom:18px;
+}
+
+footer{
+    border-top:1px solid rgba(255,255,255,.06);
+
+    margin-top:90px;
+
+    padding:34px 0;
+
+    text-align:center;
+
+    color:#94a3b8;
+}
+
+::-webkit-scrollbar{
+    width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#2d3c5d;
+    border-radius:20px;
+}
+
+@media(max-width:900px){
+
+    .nav-links{
+        gap:16px;
+    }
+
+    .section-title{
+        font-size:2.3rem;
+    }
+
+}
+
+@media(max-width:700px){
+
+    .nav-inner{
+        height:70px;
+    }
+
+    .nav-links a{
+        font-size:.88rem;
+    }
+
+    .btn{
+        padding:.85rem 1.2rem;
+    }
+
+}
+
+</style>
+
+{% block extra_css %}{% endblock %}
+
+</head>
+
+<body>
+
+<nav class="nav">
+
+<div class="container nav-inner">
+
+<a href="/" class="logo">
+Review<span>Boost</span>
+</a>
+
+<div class="nav-links">
+
+{% if user.is_authenticated %}
+
+<a href="/dashboard/">Dashboard</a>
+
+<a href="/logout/" class="btn btn-outline">
+Logout
+</a>
+
+{% else %}
+
+<a href="/login/">Login</a>
+
+<a href="/signup/" class="btn btn-primary">
+Get Started
+</a>
+
+{% endif %}
+
+</div>
+
+</div>
+
+</nav>
+
+{% block content %}{% endblock %}
+
+<footer>
+© 2026 ReviewBoost — AI Powered Review Growth Platform
+</footer>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<script>
+AOS.init({
+    duration:700,
+    once:true
+})
+</script>
+
+</body>
+</html>

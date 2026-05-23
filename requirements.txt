@@ -1,0 +1,4 @@
+django>=4.2,<5.0
+djangorestframework>=3.14
+qrcode[pil]>=7.4
+Pillow>=10.0

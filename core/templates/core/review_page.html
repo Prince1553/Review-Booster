@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+<title>
+Review {{ location.business.name }}
+</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+
+    --bg:#081120;
+    --bg2:#0f172a;
+
+    --card:#111c31;
+
+    --primary:#7c3aed;
+    --accent:#06b6d4;
+
+    --text:#f8fafc;
+    --muted:#94a3b8;
+
+    --success:#10b981;
+
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+
+    -webkit-tap-highlight-color:transparent;
+}
+
+body{
+
+    font-family:'Inter',sans-serif;
+
+    min-height:100vh;
+
+    background:
+    radial-gradient(circle at top left, rgba(124,58,237,.18), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(6,182,212,.16), transparent 30%),
+    linear-gradient(to bottom,#081120,#0f172a);
+
+    color:white;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:26px;
+}
+
+.review-wrap{
+    width:100%;
+    max-width:480px;
+}
+
+.brand{
+    text-align:center;
+    margin-bottom:22px;
+}
+
+.brand h2{
+    font-size:1.6rem;
+    font-weight:800;
+}
+
+.brand h2 span{
+    background:linear-gradient(to right,#8b5cf6,#06b6d4);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.business{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.business h1{
+    font-size:2rem;
+    font-weight:800;
+    margin-bottom:10px;
+}
+
+.business p{
+    color:#94a3b8;
+}
+
+.screen{
+    display:none;
+}
+
+.screen.active{
+    display:block;
+}
+
+.card{
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    backdrop-filter:blur(16px);
+
+    border-radius:28px;
+
+    padding:34px;
+}
+
+.center{
+    text-align:center;
+}
+
+.stars{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+
+    margin-top:28px;
+}
+
+.star{
+    font-size:3rem;
+    cursor:pointer;
+
+    transition:.2s;
+
+    filter:grayscale(1) opacity(.4);
+}
+
+.star.active,
+.star.hover{
+    filter:none;
+    transform:scale(1.1);
+}
+
+.star-hint{
+    margin-top:18px;
+    color:#94a3b8;
+}
+
+.review-list{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+
+    margin:28px 0;
+}
+
+.review-card{
+    padding:18px;
+
+    border-radius:18px;
+
+    background:rgba(255,255,255,.04);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    cursor:pointer;
+
+    transition:.2s;
+
+    line-height:1.8;
+    font-size:.94rem;
+}
+
+.review-card:hover{
+    transform:translateY(-2px);
+}
+
+.review-card.picked{
+    border-color:#8b5cf6;
+    background:rgba(124,58,237,.18);
+}
+
+.loading{
+    text-align:center;
+    color:#94a3b8;
+    padding:20px;
+}
+
+.btn{
+
+    width:100%;
+
+    padding:1rem 1.2rem;
+
+    border:none;
+
+    border-radius:18px;
+
+    font-size:1rem;
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.btn-primary{
+    background:linear-gradient(135deg,#7c3aed,#9333ea);
+    color:white;
+}
+
+.btn-primary:hover{
+    transform:translateY(-2px);
+}
+
+.btn-outline{
+
+    margin-top:14px;
+
+    background:transparent;
+
+    border:1px solid rgba(255,255,255,.12);
+
+    color:white;
+}
+
+.btn:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+}
+
+.success-icon{
+    font-size:4rem;
+    margin-bottom:18px;
+}
+
+.tip{
+    margin:24px 0;
+
+    padding:16px;
+
+    border-radius:16px;
+
+    background:rgba(16,185,129,.12);
+
+    border:1px solid rgba(16,185,129,.18);
+
+    color:#d1fae5;
+
+    line-height:1.7;
+    font-size:.92rem;
+}
+
+.back-btn{
+    margin-bottom:18px;
+
+    background:none;
+    border:none;
+
+    color:#94a3b8;
+
+    cursor:pointer;
+}
+
+@media(max-width:600px){
+
+    body{
+        padding:18px;
+    }
+
+    .card{
+        padding:24px;
+    }
+
+    .business h1{
+        font-size:1.6rem;
+    }
+
+    .star{
+        font-size:2.6rem;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="review-wrap">
+
+<div class="brand">
+<h2>
+Review<span>Boost</span>
+</h2>
+</div>
+
+<div class="business">
+
+<h1>
+{{ location.business.name }}
+</h1>
+
+<p>
+{{ location.business.get_category_display }} · {{ location.name }}
+</p>
+
+</div>
+
+<!-- SCREEN 1 -->
+
+<div class="screen active" id="screen-star">
+
+<div class="card center">
+
+<h2>
+How was your experience?
+</h2>
+
+<div class="stars">
+
+<span class="star" data-val="1">⭐</span>
+<span class="star" data-val="2">⭐</span>
+<span class="star" data-val="3">⭐</span>
+<span class="star" data-val="4">⭐</span>
+<span class="star" data-val="5">⭐</span>
+
+</div>
+
+<div class="star-hint" id="star-hint"></div>
+
+</div>
+
+</div>
+
+<!-- SCREEN 2 -->
+
+<div class="screen" id="screen-reviews">
+
+<button class="back-btn"
+onclick="showScreen('screen-star')">
+← Back
+</button>
+
+<div class="card">
+
+<h2 class="center">
+Choose your review
+</h2>
+
+<div class="review-list" id="review-list">
+
+<div class="loading">
+Preparing AI reviews...
+</div>
+
+</div>
+
+<button class="btn btn-primary"
+id="post-btn"
+disabled
+onclick="doPost()">
+
+Post This Review →
+
+</button>
+
+</div>
+
+</div>
+
+<!-- SCREEN 3 -->
+
+<div class="screen" id="screen-post">
+
+<div class="card center">
+
+<div class="success-icon">
+✅
+</div>
+
+<h2>
+Review Copied!
+</h2>
+
+<p style="margin-top:14px;color:#94a3b8;line-height:1.8;">
+Google review page will open automatically.
+</p>
+
+<div class="tip">
+
+📋 Long press the review box on Google →
+Tap <strong>Paste</strong> →
+Tap <strong>Post</strong>
+
+</div>
+
+<button class="btn btn-primary"
+id="open-google-btn">
+
+Open Google Review →
+
+</button>
+
+<button class="btn btn-outline"
+onclick="showScreen('screen-thanks')">
+
+I Already Posted It ✓
+
+</button>
+
+</div>
+
+</div>
+
+<!-- SCREEN 4 -->
+
+<div class="screen" id="screen-thanks">
+
+<div class="card center">
+
+<div class="success-icon">
+🙏
+</div>
+
+<h2>
+Thank You!
+</h2>
+
+<p style="margin-top:14px;color:#94a3b8;line-height:1.8;">
+Your review helps this business grow and serve more customers.
+</p>
+
+</div>
+
+</div>
+
+<script>
+
+const LOCATION_ID = '{{ location.id }}';
+const SCAN_ID = '{{ scan_id }}';
+
+const HINTS = {
+    1:'Very Poor',
+    2:'Poor',
+    3:'Average',
+    4:'Good',
+    5:'Excellent!'
+};
+
+let selectedStar = 0;
+let selectedReviewId = null;
+let selectedReviewText = '';
+let googleUrl = '';
+
+document.querySelectorAll('.star').forEach(star=>{
+
+    star.addEventListener('mouseenter',()=>{
+
+        highlight(+star.dataset.val);
+
+    });
+
+    star.addEventListener('mouseleave',()=>{
+
+        highlight(selectedStar);
+
+    });
+
+    star.addEventListener('click',()=>{
+
+        selectedStar = +star.dataset.val;
+
+        document.querySelectorAll('.star').forEach((s,i)=>{
+
+            s.classList.toggle('active',i < selectedStar);
+
+        });
+
+        document.getElementById('star-hint').innerText = HINTS[selectedStar];
+
+        setTimeout(()=>{
+
+            loadReviews(selectedStar);
+
+        },250);
+
+    });
+
+});
+
+function highlight(n){
+
+    document.querySelectorAll('.star').forEach((s,i)=>{
+
+        s.classList.toggle('hover',i < n);
+
+    });
+
+    document.getElementById('star-hint').innerText =
+    n ? HINTS[n] : '';
+
+}
+
+function showScreen(id){
+
+    document.querySelectorAll('.screen').forEach(screen=>{
+
+        screen.classList.remove('active');
+
+    });
+
+    document.getElementById(id).classList.add('active');
+
+}
+
+async function loadReviews(star){
+
+    showScreen('screen-reviews');
+
+    document.getElementById('review-list').innerHTML =
+    '<div class="loading">Generating AI reviews...</div>';
+
+    document.getElementById('post-btn').disabled = true;
+
+    selectedReviewId = null;
+
+    const res = await fetch('/api/reviews/',{
+
+        method:'POST',
+
+        headers:{
+            'Content-Type':'application/json',
+            'X-CSRFToken':getCookie('csrftoken')
+        },
+
+        body:JSON.stringify({
+            location_id:LOCATION_ID,
+            star:star,
+            scan_id:SCAN_ID
+        })
+
+    });
+
+    const data = await res.json();
+
+    googleUrl = data.google_url;
+
+    const list = document.getElementById('review-list');
+
+    list.innerHTML = '';
+
+    data.reviews.forEach(r=>{
+
+        const card = document.createElement('div');
+
+        card.className = 'review-card';
+
+        card.innerText = r.text;
+
+        card.onclick = ()=>{
+
+            document.querySelectorAll('.review-card').forEach(c=>{
+
+                c.classList.remove('picked');
+
+            });
+
+            card.classList.add('picked');
+
+            selectedReviewId = r.id;
+
+            selectedReviewText = r.text;
+
+            document.getElementById('post-btn').disabled = false;
+
+        };
+
+        list.appendChild(card);
+
+    });
+
+}
+
+async function doPost(){
+
+    if(!selectedReviewText) return;
+
+    try{
+
+        await navigator.clipboard.writeText(selectedReviewText);
+
+    }catch(e){
+
+        const ta = document.createElement('textarea');
+
+        ta.value = selectedReviewText;
+
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+
+        document.body.appendChild(ta);
+
+        ta.focus();
+        ta.select();
+
+        document.execCommand('copy');
+
+        document.body.removeChild(ta);
+
+    }
+
+    if(selectedReviewId){
+
+        await fetch('/api/confirm/',{
+
+            method:'POST',
+
+            headers:{
+                'Content-Type':'application/json',
+                'X-CSRFToken':getCookie('csrftoken')
+            },
+
+            body:JSON.stringify({
+                scan_id:SCAN_ID,
+                review_id:selectedReviewId
+            })
+
+        });
+
+    }
+
+    document.getElementById('open-google-btn').onclick = ()=>{
+
+        window.open(googleUrl,'_blank');
+
+    };
+
+    showScreen('screen-post');
+
+    setTimeout(()=>{
+
+        window.open(googleUrl,'_blank');
+
+    },500);
+
+}
+
+function getCookie(name){
+
+    const v = document.cookie.match('(^|;)\\s*'+name+'\\s*=\\s*([^;]+)');
+
+    return v ? v.pop() : '';
+
+}
+
+</script>
+
+</body>
+</html>
+
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Rate {{ location.business.name }}</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
+:root{--gold:#c8922a;--gold-light:#f5e6c8;--ink:#0f0e0d;--ink3:#7a7672;--paper:#faf9f7;--green:#1a6b3c;--green-light:#d4edde}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Sora',sans-serif;background:var(--paper);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:2rem 1.25rem;color:var(--ink)}
+.logo{font-size:0.78rem;font-weight:600;color:var(--ink3);margin-bottom:2rem;letter-spacing:0.04em}
+.logo span{color:var(--gold)}
+.biz-name{font-size:1.4rem;font-weight:700;letter-spacing:-0.02em;text-align:center;margin-bottom:0.4rem}
+.biz-cat{font-size:0.85rem;color:var(--ink3);margin-bottom:2.5rem;text-align:center}
+.screen{width:100%;max-width:420px;display:none;flex-direction:column;align-items:center}
+.screen.active{display:flex}
+.star-prompt{font-size:1rem;color:var(--ink3);margin-bottom:1.75rem;text-align:center}
+.stars{display:flex;gap:0.6rem;margin-bottom:0.5rem}
+.star{font-size:2.8rem;cursor:pointer;transition:transform 0.15s;user-select:none;filter:grayscale(1) opacity(0.3)}
+.star.hover,.star.active{filter:none;transform:scale(1.1)}
+.star-hint{font-size:0.78rem;color:var(--ink3);height:1.2rem;text-align:center;margin-top:0.5rem}
+.review-prompt{font-size:0.9rem;color:var(--ink3);margin-bottom:1.25rem;text-align:center}
+.review-cards{width:100%;display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1.5rem}
+.review-card{background:#fff;border:1.5px solid #e5e0d8;border-radius:12px;padding:1rem 1.1rem;font-size:0.875rem;line-height:1.6;cursor:pointer;transition:border-color 0.15s,background 0.15s;text-align:left}
+.review-card:hover,.review-card.picked{border-color:var(--gold);background:var(--gold-light)}
+.loading-card{background:#fff;border:1.5px solid #e5e0d8;border-radius:12px;padding:1.25rem;display:flex;gap:0.75rem;align-items:center;justify-content:center;color:var(--ink3);font-size:0.875rem}
+.spinner{width:18px;height:18px;border:2px solid var(--gold-light);border-top-color:var(--gold);border-radius:50%;animation:spin 0.7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.success-icon{font-size:3rem;margin-bottom:1rem}
+.success-title{font-size:1.3rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:0.5rem;text-align:center}
+.success-sub{font-size:0.875rem;color:var(--ink3);text-align:center;margin-bottom:2rem;line-height:1.6}
+.paste-tip{background:var(--green-light);color:var(--green);border-radius:10px;padding:0.85rem 1rem;font-size:0.825rem;line-height:1.5;margin-bottom:1.5rem;width:100%;text-align:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:0.875rem 1.75rem;border-radius:12px;font-size:0.95rem;font-weight:600;border:none;cursor:pointer;width:100%;transition:all 0.18s;font-family:inherit}
+.btn-gold{background:var(--gold);color:#fff} .btn-gold:hover{background:#9a6e1e}
+.btn-outline{background:transparent;border:1.5px solid #e5e0d8;color:var(--ink3);margin-top:0.75rem}
+.back-btn{background:none;border:none;font-size:0.8rem;color:var(--ink3);cursor:pointer;margin-bottom:1.5rem;font-family:inherit;align-self:flex-start}
+</style>
+</head>
+<body>
+<div class="logo">Review<span>Boost</span></div>
+<div class="biz-name">{{ location.business.name }}</div>
+<div class="biz-cat">{{ location.business.get_category_display }} · {{ location.name }}</div>
+
+<!-- SCREEN 1: Star rating -->
+<div class="screen active" id="screen-star">
+  <div class="star-prompt">How was your experience?</div>
+  <div class="stars">
+    <span class="star" data-val="1">⭐</span>
+    <span class="star" data-val="2">⭐</span>
+    <span class="star" data-val="3">⭐</span>
+    <span class="star" data-val="4">⭐</span>
+    <span class="star" data-val="5">⭐</span>
+  </div>
+  <div class="star-hint" id="star-hint"></div>
+</div>
+
+<!-- SCREEN 2: Pick review -->
+<div class="screen" id="screen-reviews">
+  <button class="back-btn" onclick="showScreen('screen-star')">← Back</button>
+  <div class="review-prompt">Pick the review that fits best:</div>
+  <div class="review-cards" id="review-list">
+    <div class="loading-card"><div class="spinner"></div> Preparing your reviews…</div>
+  </div>
+  <button class="btn btn-gold" id="post-btn" disabled onclick="doPost()">Post this review →</button>
+</div>
+
+<!-- SCREEN 3: Copy + redirect -->
+<div class="screen" id="screen-post">
+  <div class="success-icon">✅</div>
+  <div class="success-title">Review copied!</div>
+  <div class="success-sub">Your review text has been copied. Google will open now.</div>
+  <div class="paste-tip">📋 Long-press the text box on Google → tap <strong>Paste</strong> → tap <strong>Post</strong></div>
+  <button class="btn btn-gold" id="open-google-btn">Open Google review →</button>
+  <button class="btn btn-outline" onclick="showScreen('screen-thanks')">I already posted it ✓</button>
+</div>
+
+<!-- SCREEN 4: Thank you -->
+<div class="screen" id="screen-thanks">
+  <div class="success-icon">🙏</div>
+  <div class="success-title">Thank you!</div>
+  <div class="success-sub">Your review means a lot to us. We look forward to seeing you again!</div>
+</div>
+
+<script>
+const LOCATION_ID = '{{ location.id }}';
+const SCAN_ID = '{{ scan_id }}';
+const HINTS = {1:'Very poor',2:'Poor',3:'Average',4:'Good',5:'Excellent!'};
+let selectedStar = 0, selectedReviewId = null, selectedReviewText = '', googleUrl = '';
+
+document.querySelectorAll('.star').forEach(s => {
+  s.addEventListener('mouseenter', () => highlight(+s.dataset.val));
+  s.addEventListener('mouseleave', () => highlight(selectedStar));
+  s.addEventListener('click', () => {
+    selectedStar = +s.dataset.val;
+    document.querySelectorAll('.star').forEach((st,i) => st.classList.toggle('active', i < selectedStar));
+    document.getElementById('star-hint').textContent = HINTS[selectedStar];
+    setTimeout(() => loadReviews(selectedStar), 250);
+  });
+});
+
+function highlight(n) {
+  document.querySelectorAll('.star').forEach((s,i) => s.classList.toggle('hover', i < n));
+  document.getElementById('star-hint').textContent = n ? HINTS[n] : '';
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+async function loadReviews(star) {
+  showScreen('screen-reviews');
+  document.getElementById('review-list').innerHTML = '<div class="loading-card"><div class="spinner"></div> Preparing your reviews…</div>';
+  document.getElementById('post-btn').disabled = true;
+  selectedReviewId = null;
+
+  const res = await fetch('/api/reviews/', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken')},
+    body: JSON.stringify({location_id: LOCATION_ID, star: star, scan_id: SCAN_ID})
+  });
+  const data = await res.json();
+  googleUrl = data.google_url;
+
+  const list = document.getElementById('review-list');
+  list.innerHTML = '';
+  data.reviews.forEach(r => {
+    const card = document.createElement('div');
+    card.className = 'review-card';
+    card.textContent = r.text;
+    card.onclick = () => {
+      document.querySelectorAll('.review-card').forEach(c => c.classList.remove('picked'));
+      card.classList.add('picked');
+      selectedReviewId = r.id;
+      selectedReviewText = r.text;
+      document.getElementById('post-btn').disabled = false;
+    };
+    list.appendChild(card);
+  });
+}
+
+async function doPost() {
+  if (!selectedReviewId && !selectedReviewText) return;
+  // Copy to clipboard with fallback
+  try {
+    await navigator.clipboard.writeText(selectedReviewText);
+  } catch(e) {
+    // Fallback for older Android
+    const ta = document.createElement('textarea');
+    ta.value = selectedReviewText;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+  // Tell server
+  if (selectedReviewId) {
+    await fetch('/api/confirm/', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken')},
+      body: JSON.stringify({scan_id: SCAN_ID, review_id: selectedReviewId})
+    });
+  }
+  document.getElementById('open-google-btn').onclick = () => window.open(googleUrl, '_blank');
+  showScreen('screen-post');
+  setTimeout(() => window.open(googleUrl, '_blank'), 500);
+}
+
+function getCookie(name) {
+  const v = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+  return v ? v.pop() : '';
+}
+</script>
+</body>
+</html> {% endcomment %}

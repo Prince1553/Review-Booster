@@ -1,0 +1,458 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+Dashboard — {{ business.name }}
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.dashboard{
+    padding:50px 0 80px;
+}
+
+.dash-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+
+    margin-bottom:40px;
+}
+
+.dash-top h1{
+    font-size:2.3rem;
+    font-weight:800;
+}
+
+.dash-top p{
+    color:#94a3b8;
+    margin-top:10px;
+}
+
+.metrics{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:22px;
+
+    margin-bottom:32px;
+}
+
+.metric{
+    padding:28px;
+}
+
+.metric span{
+    display:block;
+    color:#94a3b8;
+    margin-bottom:14px;
+    font-size:.9rem;
+}
+
+.metric h2{
+    font-size:2.4rem;
+}
+
+.charts{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:24px;
+
+    margin-bottom:36px;
+}
+
+.chart-card{
+    padding:26px;
+}
+
+.chart-card h3{
+    margin-bottom:22px;
+}
+
+.locations{
+    margin-top:30px;
+}
+
+.location-card{
+    padding:24px;
+    margin-bottom:20px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.location-left{
+    display:flex;
+    gap:18px;
+    align-items:center;
+}
+
+.qr-thumb{
+    width:82px;
+    height:82px;
+
+    border-radius:18px;
+
+    object-fit:cover;
+
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.location-info h3{
+    margin-bottom:8px;
+}
+
+.location-info p{
+    color:#94a3b8;
+    font-size:.9rem;
+    line-height:1.7;
+}
+
+.location-actions{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.copy-btn{
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+
+    color:white;
+
+    padding:.9rem 1.1rem;
+
+    border-radius:14px;
+}
+
+@media(max-width:1000px){
+
+    .metrics{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .charts{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:700px){
+
+    .metrics{
+        grid-template-columns:1fr;
+    }
+
+    .dash-top h1{
+        font-size:1.8rem;
+    }
+
+}
+
+</style>
+
+<section class="dashboard">
+
+<div class="container">
+
+<div class="dash-top">
+
+<div>
+
+<div class="badge">
+{{ business.get_plan_display }}
+</div>
+
+<h1>
+{{ business.name }}
+</h1>
+
+<p>
+{{ business.get_category_display }}
+</p>
+
+</div>
+
+<a href="/dashboard/add-location/" class="btn btn-primary">
++ Add Location
+</a>
+
+</div>
+
+<div class="metrics">
+
+<div class="card metric">
+<span>Total Scans</span>
+<h2>{{ total_scans }}</h2>
+</div>
+
+<div class="card metric">
+<span>This Week</span>
+<h2>{{ scans_this_week }}</h2>
+</div>
+
+<div class="card metric">
+<span>Average Rating</span>
+<h2>{{ avg_star }}★</h2>
+</div>
+
+<div class="card metric">
+<span>Total Locations</span>
+<h2>{{ locations.count }}</h2>
+</div>
+
+</div>
+
+<div class="charts">
+
+<div class="card chart-card">
+
+<h3>
+Scan Activity — Last 7 Days
+</h3>
+
+<canvas id="trendChart"></canvas>
+
+</div>
+
+<div class="card chart-card">
+
+<h3>
+Star Distribution
+</h3>
+
+<canvas id="starChart"></canvas>
+
+</div>
+
+</div>
+
+<div class="locations">
+
+<h2 style="margin-bottom:24px;">
+Locations & QR Codes
+</h2>
+
+{% for loc in locations %}
+
+<div class="card location-card">
+
+<div class="location-left">
+
+{% if loc.qr_image %}
+
+<img src="{{ loc.qr_image.url }}" class="qr-thumb">
+
+{% else %}
+
+<div class="qr-thumb"
+style="display:flex;align-items:center;justify-content:center;">
+QR
+</div>
+
+{% endif %}
+
+<div class="location-info">
+
+<h3>
+{{ loc.name }}
+</h3>
+
+<p>
+Place ID: {{ loc.place_id }}
+</p>
+
+<p>
+{{ loc.reviews.count }} reviews in pool
+</p>
+
+</div>
+
+</div>
+
+<div class="location-actions">
+
+<button class="copy-btn"
+onclick="copyUrl('{{ request.scheme }}://{{ request.get_host }}/review/{{ loc.id }}/')">
+Copy Review URL
+</button>
+
+{% if loc.qr_image %}
+
+<a href="{{ loc.qr_image.url }}"
+download
+class="btn btn-outline">
+Download QR
+</a>
+
+{% endif %}
+
+<a href="/review/{{ loc.id }}/"
+target="_blank"
+class="btn btn-primary">
+Preview
+</a>
+
+</div>
+
+</div>
+
+{% empty %}
+
+<div class="card" style="padding:40px;text-align:center;">
+No locations yet.
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+</section>
+
+<script>
+
+const trend = {{ trend_json|safe }};
+const starDist = {{ star_dist_json|safe }};
+
+new Chart(document.getElementById('trendChart'),{
+    type:'bar',
+    data:{
+        labels:trend.map(d=>d.day),
+        datasets:[{
+            data:trend.map(d=>d.count)
+        }]
+    },
+    options:{
+        responsive:true,
+        plugins:{
+            legend:{display:false}
+        }
+    }
+});
+
+new Chart(document.getElementById('starChart'),{
+    type:'doughnut',
+    data:{
+        labels:starDist.map(d=>d.star+'★'),
+        datasets:[{
+            data:starDist.map(d=>d.count)
+        }]
+    },
+    options:{
+        responsive:true
+    }
+});
+
+function copyUrl(url){
+
+    navigator.clipboard.writeText(url).then(()=>{
+
+        event.target.innerText = 'Copied!';
+
+        setTimeout(()=>{
+            event.target.innerText = 'Copy Review URL';
+        },1500)
+
+    })
+
+}
+
+</script>
+
+{% endblock %}
+
+{% comment %} {% extends 'core/base.html' %}
+{% block title %}Dashboard — {{ business.name }}{% endblock %}
+{% block content %}
+<style>
+.dash{padding:2.5rem 0}
+.dash-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:2.5rem;flex-wrap:wrap;gap:1rem}
+.dash-title{font-size:1.6rem;font-weight:700;letter-spacing:-0.025em}
+.dash-sub{font-size:0.875rem;color:var(--ink3);margin-top:0.25rem}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem}
+.metric{background:#fff;border:1px solid var(--paper3);border-radius:var(--radius);padding:1.25rem 1.5rem}
+.metric-lbl{font-size:0.78rem;color:var(--ink3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.5rem}
+.metric-val{font-size:2rem;font-weight:700;letter-spacing:-0.02em;line-height:1}
+.metric-val.gold{color:var(--gold)}
+.metric-val.green{color:var(--green)}
+.chart-row{display:grid;grid-template-columns:2fr 1fr;gap:1.5rem;margin-bottom:2rem}
+@media(max-width:700px){.chart-row{grid-template-columns:1fr}}
+.chart-card{background:#fff;border:1px solid var(--paper3);border-radius:var(--radius);padding:1.5rem}
+.chart-title{font-size:0.875rem;font-weight:600;margin-bottom:1.25rem;color:var(--ink2)}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.section-head h2{font-size:1rem;font-weight:600}
+.loc-card{background:#fff;border:1px solid var(--paper3);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.loc-name{font-weight:600;font-size:0.95rem}
+.loc-meta{font-size:0.8rem;color:var(--ink3);margin-top:0.2rem}
+.loc-actions{display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap}
+.qr-thumb{width:56px;height:56px;border-radius:8px;border:1px solid var(--paper3);object-fit:contain}
+.copy-btn{font-size:0.78rem;background:var(--paper2);border:1px solid var(--paper3);border-radius:6px;padding:0.3rem 0.7rem;color:var(--ink3);cursor:pointer}
+.copy-btn:hover{background:var(--paper3);color:var(--ink)}
+</style>
+<div class="dash">
+<div class="container">
+  <div class="dash-header">
+    <div>
+      <div class="dash-title">{{ business.name }}</div>
+      <div class="dash-sub">{{ business.get_category_display }} · <span class="badge badge-gold">{{ business.get_plan_display }}</span></div>
+    </div>
+    <a href="/dashboard/add-location/" class="btn btn-gold">+ Add location</a>
+  </div>
+  <div class="metrics">
+    <div class="metric"><div class="metric-lbl">Total scans</div><div class="metric-val">{{ total_scans }}</div></div>
+    <div class="metric"><div class="metric-lbl">This week</div><div class="metric-val green">{{ scans_this_week }}</div></div>
+    <div class="metric"><div class="metric-lbl">Avg star rating</div><div class="metric-val gold">{{ avg_star }}★</div></div>
+    <div class="metric"><div class="metric-lbl">Locations</div><div class="metric-val">{{ locations.count }}</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Scan activity — last 7 days</div>
+      <canvas id="trendChart" style="max-height:180px"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Star distribution</div>
+      <canvas id="starChart" style="max-height:180px"></canvas>
+    </div>
+  </div>
+  <div class="section-head"><h2>Locations & QR codes</h2></div>
+  {% for loc in locations %}
+  <div class="loc-card">
+    <div style="display:flex;gap:1rem;align-items:center">
+      {% if loc.qr_image %}
+        <img src="{{ loc.qr_image.url }}" class="qr-thumb" alt="QR">
+      {% else %}
+        <div style="width:56px;height:56px;border-radius:8px;border:1.5px dashed var(--paper3);display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:var(--ink3);text-align:center">QR<br>pending</div>
+      {% endif %}
+      <div>
+        <div class="loc-name">{{ loc.name }}</div>
+        <div class="loc-meta">Place ID: {{ loc.place_id }}</div>
+        <div class="loc-meta">{{ loc.reviews.count }} reviews in pool</div>
+      </div>
+    </div>
+    <div class="loc-actions">
+      <button class="copy-btn" onclick="copyUrl('{{ request.scheme }}://{{ request.get_host }}/review/{{ loc.id }}/')">Copy review URL</button>
+      {% if loc.qr_image %}<a href="{{ loc.qr_image.url }}" download class="btn btn-outline" style="font-size:0.8rem;padding:0.4rem 0.9rem">Download QR</a>{% endif %}
+      <a href="/review/{{ loc.id }}/" target="_blank" class="btn btn-outline" style="font-size:0.8rem;padding:0.4rem 0.9rem">Preview</a>
+    </div>
+  </div>
+  {% empty %}
+  <div style="text-align:center;padding:2rem;color:var(--ink3)">No locations yet. <a href="/dashboard/add-location/" style="color:var(--gold)">Add your first one →</a></div>
+  {% endfor %}
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+const trend = {{ trend_json|safe }};
+const starDist = {{ star_dist_json|safe }};
+new Chart(document.getElementById('trendChart'),{type:'bar',data:{labels:trend.map(d=>d.day),datasets:[{data:trend.map(d=>d.count),backgroundColor:'#c8922acc',borderRadius:4,borderSkipped:false}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1},grid:{color:'#e5e0d8'}},x:{grid:{display:false}}}}});
+new Chart(document.getElementById('starChart'),{type:'doughnut',data:{labels:starDist.map(d=>d.star+'★'),datasets:[{data:starDist.map(d=>d.count),backgroundColor:['#1a6b3c','#2d9e5c','#c8922a','#e05a40','#c0392b'],borderWidth:0}]},options:{plugins:{legend:{position:'bottom',labels:{font:{size:11},padding:8}}},cutout:'65%'}});
+function copyUrl(url){navigator.clipboard.writeText(url).then(()=>{event.target.textContent='Copied!';setTimeout(()=>event.target.textContent='Copy review URL',1500)})}
+</script>
+{% endblock %} {% endcomment %}

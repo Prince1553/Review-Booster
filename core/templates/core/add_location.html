@@ -1,0 +1,199 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+Add Location — ReviewBoost
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.add-location{
+    min-height:calc(100vh - 78px);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:50px 20px;
+}
+
+.location-card{
+    width:100%;
+    max-width:560px;
+
+    padding:42px;
+}
+
+.location-top{
+    text-align:center;
+    margin-bottom:34px;
+}
+
+.location-top h1{
+    font-size:2.1rem;
+    font-weight:800;
+
+    margin:14px 0 10px;
+}
+
+.location-top p{
+    color:#94a3b8;
+    line-height:1.8;
+}
+
+.place-help{
+    margin-top:10px;
+
+    color:#94a3b8;
+    line-height:1.7;
+    font-size:.85rem;
+}
+
+.place-help a{
+    color:#67e8f9;
+}
+
+.submit-btn{
+    width:100%;
+    margin-top:10px;
+}
+
+.back-link{
+    margin-top:22px;
+    text-align:center;
+}
+
+.back-link a{
+    color:#c4b5fd;
+}
+
+@media(max-width:700px){
+
+    .location-card{
+        padding:28px;
+    }
+
+    .location-top h1{
+        font-size:1.7rem;
+    }
+
+}
+
+</style>
+
+<section class="add-location">
+
+<div class="card location-card">
+
+<div class="location-top">
+
+<div class="badge">
+Multi-Location Management
+</div>
+
+<h1>
+Add New Location
+</h1>
+
+<p>
+Each business location gets its own QR code, analytics and AI review workflow.
+</p>
+
+</div>
+
+<form method="post">
+
+{% csrf_token %}
+
+<div class="form-group">
+
+<label>
+Location Name
+</label>
+
+<input type="text"
+name="name"
+required
+placeholder="Connaught Place Branch">
+
+</div>
+
+<div class="form-group">
+
+<label>
+Google Place ID
+</label>
+
+<input type="text"
+name="place_id"
+required
+placeholder="ChIJN1t_tDeuEmsRUsoyG83frY4">
+
+<div class="place-help">
+
+Find your Place ID using
+
+<a href="https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder"
+target="_blank">
+
+Google Place ID Finder →
+
+</a>
+
+</div>
+
+</div>
+
+<button type="submit"
+class="btn btn-primary submit-btn">
+
+Generate QR & Add Location
+
+</button>
+
+</form>
+
+<div class="back-link">
+
+<a href="/dashboard/">
+← Back to Dashboard
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}
+
+{% comment %} {% extends 'core/base.html' %}
+{% block title %}Add Location — ReviewBoost{% endblock %}
+{% block content %}
+<style>
+.wrap{min-height:calc(100vh - 65px);display:flex;align-items:center;justify-content:center;padding:2rem}
+.card{background:#fff;border:1px solid var(--paper3);border-radius:var(--radius);padding:2.5rem;width:100%;max-width:480px;box-shadow:var(--shadow-lg)}
+.title{font-size:1.4rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:0.3rem}
+.sub{font-size:0.875rem;color:var(--ink3);margin-bottom:2rem}
+.place-help{font-size:0.78rem;color:var(--ink3);margin-top:0.35rem}
+.place-help a{color:var(--gold)}
+</style>
+<div class="wrap">
+  <div class="card">
+    <div class="title">Add a new location</div>
+    <div class="sub">Each location gets its own QR code and review pool</div>
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group"><label>Location name</label><input name="name" required placeholder="e.g. Connaught Place Branch"></div>
+      <div class="form-group">
+        <label>Google Place ID</label>
+        <input name="place_id" required placeholder="ChIJN1t_tDeuEmsRUsoyG83frY4">
+        <div class="place-help">Find yours at <a href="https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder" target="_blank">Google's Place ID finder →</a></div>
+      </div>
+      <button type="submit" class="btn btn-gold" style="width:100%;justify-content:center;padding:0.85rem">Add location & generate QR</button>
+    </form>
+    <div style="text-align:center;margin-top:1.25rem;font-size:0.85rem;color:var(--ink3)"><a href="/dashboard/" style="color:var(--gold)">← Back to dashboard</a></div>
+  </div>
+</div>
+{% endblock %} {% endcomment %}
