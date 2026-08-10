@@ -1,358 +1,164 @@
-{% extends 'core/base.html' %}
+ {% extends 'core/base.html' %}
 
 {% block title %}
-{% if mode == 'signup' %}
-Create Account — ReviewBoost
-{% else %}
-Login — ReviewBoost
-{% endif %}
+{% if mode == 'signup' %}Create Account — ReviewBoost{% else %}Login — ReviewBoost{% endif %}
 {% endblock %}
 
 {% block content %}
-
 <style>
-
-.auth-section{
-    min-height:calc(100vh - 78px);
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    padding:60px 20px;
-
-    position:relative;
-    overflow:hidden;
-}
-
-.auth-section::before{
-    content:'';
-    position:absolute;
-
-    width:500px;
-    height:500px;
-
-    background:rgba(124,58,237,.18);
-
-    border-radius:50%;
-
-    top:-200px;
-    right:-120px;
-
-    filter:blur(90px);
-}
-
-.auth-card{
-    width:100%;
-    max-width:520px;
-
-    padding:42px;
-
-    position:relative;
-    z-index:2;
-}
-
-.auth-top{
-    text-align:center;
-    margin-bottom:32px;
-}
-
-.auth-top h1{
-    font-size:2.2rem;
-    font-weight:800;
-
-    margin:14px 0 10px;
-}
-
-.auth-top p{
-    color:#94a3b8;
-    line-height:1.8;
-}
-
-.auth-btn{
-    width:100%;
-    margin-top:8px;
-}
-
-.auth-switch{
-    margin-top:24px;
-    text-align:center;
-
-    color:#94a3b8;
-    font-size:.95rem;
-}
-
-.auth-switch a{
-    color:#c4b5fd;
-    font-weight:600;
-}
-
-.place-help{
-    margin-top:10px;
-
-    color:#94a3b8;
-    font-size:.82rem;
-    line-height:1.7;
-}
-
-.place-help a{
-    color:#67e8f9;
-}
-
-@media(max-width:700px){
-
-    .auth-card{
-        padding:28px;
-    }
-
-    .auth-top h1{
-        font-size:1.8rem;
-    }
-
-}
-
+.auth-section{min-height:calc(100vh - 78px);display:flex;align-items:center;justify-content:center;padding:60px 20px;position:relative;overflow:hidden}
+.auth-section::before{content:'';position:absolute;width:500px;height:500px;background:rgba(254,97,1,.10);border-radius:50%;top:-200px;right:-120px;filter:blur(90px)}
+.auth-section::after{content:'';position:absolute;width:420px;height:420px;background:rgba(0,62,108,.08);border-radius:50%;bottom:-180px;left:-140px;filter:blur(90px)}
+.auth-card{width:100%;max-width:560px;padding:42px;position:relative;z-index:2}
+.auth-top{text-align:center;margin-bottom:32px}
+.auth-top h1{font-size:2.2rem;font-weight:800;margin:14px 0 10px;color:var(--ink)}
+.auth-top p{color:var(--ink3);line-height:1.8}
+.auth-btn{width:100%;margin-top:8px}
+.auth-switch{margin-top:24px;text-align:center;color:var(--ink3);font-size:.95rem}
+.auth-switch a{color:var(--gold-dark);font-weight:600}
+.field-hint{margin-top:7px;color:var(--ink3);font-size:.8rem;line-height:1.6}
+.kw-toggle{display:flex;align-items:center;gap:10px;margin-bottom:12px;cursor:pointer;user-select:none}
+.kw-toggle input[type=checkbox]{width:18px;height:18px;accent-color:var(--gold);flex-shrink:0;cursor:pointer}
+.kw-toggle span{font-size:.9rem;color:var(--ink3);line-height:1.5}
+.kw-box{display:none}
+.kw-box.open{display:block}
+.optional-badge{display:inline-block;font-size:.68rem;font-weight:600;background:var(--gold-light);color:var(--gold-dark);padding:.15rem .55rem;border-radius:100px;margin-left:6px;vertical-align:middle}
+@media(max-width:700px){.auth-card{padding:24px}.auth-top h1{font-size:1.8rem}}
 </style>
 
 <section class="auth-section">
-
 <div class="card auth-card">
 
 <div class="auth-top">
-
-<div class="badge">
-AI Powered Review Platform
+  <div class="badge">AI Powered Review Platform</div>
+  {% if mode == 'signup' %}
+    <h1>Create Your Account</h1>
+    <p>Get more genuine Google reviews — set up in 2 minutes.</p>
+  {% else %}
+    <h1>Welcome Back</h1>
+    <p>Login to your ReviewBoost dashboard.</p>
+  {% endif %}
 </div>
+
+{% if error %}<div class="msg-error">{{ error }}</div>{% endif %}
 
 {% if mode == 'signup' %}
-
-<h1>
-Create Your Account
-</h1>
-
-<p>
-Start generating more Google reviews using AI-powered QR workflows and smart customer review flows.
-</p>
-
-{% else %}
-
-<h1>
-Welcome Back
-</h1>
-
-<p>
-Login to your ReviewBoost dashboard and manage your business review growth.
-</p>
-
-{% endif %}
-
-</div>
-
-{% if error %}
-<div class="msg-error">
-{{ error }}
-</div>
-{% endif %}
-
-{% if mode == 'signup' %}
-
 <form method="post" action="/signup/">
-
 {% csrf_token %}
 
-<div class="form-group">
-<label>Your Name</label>
-<input type="text" name="name" required placeholder="Rahul Sharma">
-</div>
+  <div class="form-group">
+    <label>Your Name</label>
+    <input type="text" name="name" required placeholder="Rahul Sharma">
+  </div>
 
-<div class="form-group">
-<label>Email Address</label>
-<input type="email" name="email" required placeholder="you@example.com">
-</div>
+  <div class="form-group">
+    <label>Email Address</label>
+    <input type="email" name="email" required placeholder="you@example.com">
+  </div>
 
-<div class="form-group">
-<label>Password</label>
-<input type="password" name="password" required placeholder="Minimum 6 characters">
-</div>
+  <div class="form-group">
+    <label>Password</label>
+    <input type="password" name="password" required placeholder="Minimum 6 characters">
+  </div>
 
-<div class="form-group">
-<label>Business Name</label>
-<input type="text" name="business_name" required placeholder="Sharma Cafe">
-</div>
+  <div class="form-group">
+    <label>Business Name</label>
+    <input type="text" name="business_name" required placeholder="Sharma Cafe">
+  </div>
 
-<div class="form-group">
+  <div class="form-group">
+    <label>Business Category</label>
+    <select name="category" required>
+      <option value="">Select category</option>
+      <option value="restaurant">Restaurant / Cafe / Dhaba</option>
+      <option value="salon">Salon / Spa</option>
+      <option value="clinic">Clinic / Hospital</option>
+      <option value="gym">Gym / Fitness</option>
+      <option value="hotel">Hotel / Guesthouse</option>
+      <option value="retail">Retail Shop</option>
+      <option value="other">Other</option>
+    </select>
+  </div>
 
-<label>Business Category</label>
+  <div class="form-group">
+    <label>Business Address</label>
+    <textarea name="address" required rows="2"
+              placeholder="Shop 12, Connaught Place, New Delhi 110001"
+              style="resize:vertical"></textarea>
+    <div class="field-hint">Full address — shown on your review page so customers know where they are.</div>
+  </div>
 
-<select name="category" required>
+  <div class="form-group">
+    <label>
+      Google Place ID
+      <span class="optional-badge">Optional</span>
+    </label>
+    <input type="text" name="place_id"
+           placeholder="ChIJN1t_tDeuEmsRUsoyG83frY4">
+    <div class="field-hint">
+      Leave blank — we use your address to send customers to Google.<br>
+      If you know your Place ID:
+      <a href="https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder"
+         target="_blank" style="color:var(--gold-dark)">find it here →</a>
+    </div>
+  </div>
 
-<option value="">Select category</option>
+  <!-- Custom keywords — optional, collapsible -->
+  <div class="form-group">
+    <label class="kw-toggle" onclick="toggleKw()">
+      <input type="checkbox" id="kw-check" onclick="event.stopPropagation();toggleKw()">
+      <span>
+        Do you want specific things mentioned in customer reviews?
+        <span class="optional-badge">Optional</span>
+      </span>
+    </label>
+    <div class="kw-box" id="kw-box">
+      <textarea name="custom_keywords" rows="2"
+                placeholder="e.g. biryani, quick delivery, friendly staff, outdoor seating"
+                style="resize:vertical"></textarea>
+      <div class="field-hint">
+        Separate with commas. These will be woven into the AI-generated review prompts
+        so customers naturally mention what matters most to you.
+      </div>
+    </div>
+  </div>
 
-<option value="restaurant">
-Restaurant / Cafe / Dhaba
-</option>
-
-<option value="salon">
-Salon / Spa
-</option>
-
-<option value="clinic">
-Clinic / Hospital
-</option>
-
-<option value="gym">
-Gym / Fitness
-</option>
-
-<option value="hotel">
-Hotel / Guesthouse
-</option>
-
-<option value="retail">
-Retail Shop
-</option>
-
-<option value="other">
-Other
-</option>
-
-</select>
-
-</div>
-
-<div class="form-group">
-
-<label>Google Place ID</label>
-
-<input type="text"
-name="place_id"
-required
-placeholder="ChIJN1t_tDeuEmsRUsoyG83frY4">
-
-<div class="place-help">
-
-Find your Google Place ID using
-<a href="https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder" target="_blank">
-Google Place ID Finder →
-</a>
-
-</div>
-
-</div>
-
-<button type="submit" class="btn btn-primary auth-btn">
-Create Account & Generate QR
-</button>
-
+  <button type="submit" class="btn btn-primary auth-btn">
+    Create Account &amp; Generate QR
+  </button>
 </form>
 
 <div class="auth-switch">
-
-Already have an account?
-<a href="/login/">
-Login
-</a>
-
+  Already have an account? <a href="/login/">Login</a>
 </div>
 
 {% else %}
-
 <form method="post" action="/login/">
-
 {% csrf_token %}
-
-<div class="form-group">
-<label>Email Address</label>
-<input type="email" name="email" required placeholder="you@example.com">
-</div>
-
-<div class="form-group">
-<label>Password</label>
-<input type="password" name="password" required placeholder="Your password">
-</div>
-
-<button type="submit" class="btn btn-primary auth-btn">
-Login to Dashboard
-</button>
-
+  <div class="form-group">
+    <label>Email Address</label>
+    <input type="email" name="email" required placeholder="you@example.com">
+  </div>
+  <div class="form-group">
+    <label>Password</label>
+    <input type="password" name="password" required placeholder="Your password">
+  </div>
+  <button type="submit" class="btn btn-primary auth-btn">Login to Dashboard</button>
 </form>
-
 <div class="auth-switch">
-
-Don't have an account?
-<a href="/signup/">
-Create free account
-</a>
-
+  Don't have an account? <a href="/signup/">Create free account</a>
 </div>
-
 {% endif %}
 
 </div>
-
 </section>
 
+<script>
+function toggleKw() {
+  const box = document.getElementById('kw-box');
+  const chk = document.getElementById('kw-check');
+  const open = box.classList.toggle('open');
+  chk.checked = open;
+}
+</script>
 {% endblock %}
-
-{% comment %} {% extends 'core/base.html' %}
-{% block title %}{% if mode == 'signup' %}Sign Up{% else %}Login{% endif %} — ReviewBoost{% endblock %}
-{% block content %}
-<style>
-.auth-wrap{min-height:calc(100vh - 65px);display:flex;align-items:center;justify-content:center;padding:2rem}
-.auth-card{background:#fff;border:1px solid var(--paper3);border-radius:var(--radius);padding:2.5rem;width:100%;max-width:440px;box-shadow:var(--shadow-lg)}
-.auth-title{font-size:1.5rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:0.35rem}
-.auth-sub{font-size:0.875rem;color:var(--ink3);margin-bottom:2rem}
-.auth-switch{text-align:center;font-size:0.85rem;color:var(--ink3);margin-top:1.5rem}
-.auth-switch a{color:var(--gold);font-weight:500}
-.place-help{font-size:0.78rem;color:var(--ink3);margin-top:0.35rem}
-.place-help a{color:var(--gold)}
-</style>
-<div class="auth-wrap">
-  <div class="auth-card">
-    {% if mode == 'signup' %}
-      <div class="auth-title">Create your account</div>
-      <div class="auth-sub">Start getting more Google reviews today</div>
-      {% if error %}<div class="msg-error">{{ error }}</div>{% endif %}
-      <form method="post" action="/signup/">
-        {% csrf_token %}
-        <div class="form-group"><label>Your name</label><input name="name" required placeholder="Rahul Sharma"></div>
-        <div class="form-group"><label>Email address</label><input name="email" type="email" required placeholder="you@email.com"></div>
-        <div class="form-group"><label>Password</label><input name="password" type="password" required placeholder="Min 6 characters"></div>
-        <div class="form-group"><label>Business name</label><input name="business_name" required placeholder="Sharma's Dhaba"></div>
-        <div class="form-group">
-          <label>Business category</label>
-          <select name="category" required>
-            <option value="">Select category</option>
-            <option value="restaurant">Restaurant / Cafe / Dhaba</option>
-            <option value="salon">Salon / Spa</option>
-            <option value="clinic">Clinic / Hospital</option>
-            <option value="gym">Gym / Fitness</option>
-            <option value="hotel">Hotel / Guesthouse</option>
-            <option value="retail">Retail Shop</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Google Place ID</label>
-          <input name="place_id" required placeholder="ChIJN1t_tDeuEmsRUsoyG83frY4">
-          <div class="place-help">Find yours at <a href="https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder" target="_blank">Google's Place ID finder →</a></div>
-        </div>
-        <button type="submit" class="btn btn-gold" style="width:100%;justify-content:center;padding:0.85rem;font-size:0.95rem">Create account & generate QR</button>
-      </form>
-      <div class="auth-switch">Already have an account? <a href="/login/">Login</a></div>
-    {% else %}
-      <div class="auth-title">Welcome back</div>
-      <div class="auth-sub">Login to your ReviewBoost dashboard</div>
-      {% if error %}<div class="msg-error">{{ error }}</div>{% endif %}
-      <form method="post" action="/login/">
-        {% csrf_token %}
-        <div class="form-group"><label>Email address</label><input name="email" type="email" required placeholder="you@email.com"></div>
-        <div class="form-group"><label>Password</label><input name="password" type="password" required placeholder="Your password"></div>
-        <button type="submit" class="btn btn-gold" style="width:100%;justify-content:center;padding:0.85rem;font-size:0.95rem">Login</button>
-      </form>
-      <div class="auth-switch">No account? <a href="/signup/">Sign up free</a></div>
-    {% endif %}
-  </div>
-</div>
-{% endblock %} {% endcomment %}
-
-

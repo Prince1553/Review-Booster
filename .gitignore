@@ -1,1 +1,25 @@
-venv
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Django
+db.sqlite3
+
+# Environment
+.env
+.env.*
+
+# Media / uploaded files
+media/
+
+# Static generated files
+staticfiles/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

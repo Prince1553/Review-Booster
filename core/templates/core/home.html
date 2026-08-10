@@ -24,7 +24,7 @@ ReviewBoost — AI-Powered Google Review Growth Platform
     width:520px;
     height:520px;
     border-radius:50%;
-    background:rgba(124,58,237,.16);
+    background:rgba(254,97,1,.10);
     top:-220px;
     right:-120px;
     filter:blur(90px);
@@ -36,7 +36,7 @@ ReviewBoost — AI-Powered Google Review Growth Platform
     width:420px;
     height:420px;
     border-radius:50%;
-    background:rgba(6,182,212,.10);
+    background:rgba(0,62,108,.08);
     bottom:-180px;
     left:-120px;
     filter:blur(90px);
@@ -61,10 +61,10 @@ ReviewBoost — AI-Powered Google Review Growth Platform
 
     border-radius:999px;
 
-    background:rgba(124,58,237,.10);
-    border:1px solid rgba(124,58,237,.20);
+    background:var(--gold-light);
+    border:1px solid rgba(254,97,1,.25);
 
-    color:#c4b5fd;
+    color:var(--gold-dark);
 
     font-size:.82rem;
     font-weight:600;
@@ -74,7 +74,7 @@ ReviewBoost — AI-Powered Google Review Growth Platform
     width:8px;
     height:8px;
     border-radius:50%;
-    background:#8b5cf6;
+    background:var(--gold);
     animation:pulse 2s infinite;
 }
 
@@ -95,19 +95,20 @@ ReviewBoost — AI-Powered Google Review Growth Platform
     line-height:1.02;
     letter-spacing:-3px;
     font-weight:800;
+    color:var(--ink);
 
     margin:24px 0;
 }
 
 .hero-left h1 span{
-    background:linear-gradient(to right,#8b5cf6,#06b6d4);
+    background:linear-gradient(to right,#fe6101,#003e6c);
     -webkit-background-clip:text;
     color:transparent;
 }
 
 .hero-left p{
     font-size:1.06rem;
-    color:#94a3b8;
+    color:var(--ink3);
     line-height:1.9;
 
     max-width:620px;
@@ -144,7 +145,7 @@ ReviewBoost — AI-Powered Google Review Growth Platform
     border-radius:50%;
     object-fit:cover;
 
-    border:2px solid #0f172a;
+    border:2px solid var(--paper);
 
     margin-left:-12px;
 }
@@ -157,10 +158,11 @@ ReviewBoost — AI-Powered Google Review Growth Platform
     display:block;
     font-size:.92rem;
     margin-bottom:2px;
+    color:var(--ink);
 }
 
 .trust-text span{
-    color:#94a3b8;
+    color:var(--ink3);
     font-size:.82rem;
 }
 
@@ -179,12 +181,13 @@ ReviewBoost — AI-Powered Google Review Growth Platform
 .hero-stat h3{
     font-size:1.8rem;
     margin-bottom:6px;
+    color:var(--navy);
 }
 
 .hero-stat p{
     margin:0;
     font-size:.85rem;
-    color:#94a3b8;
+    color:var(--ink3);
     line-height:1.6;
 }
 
@@ -200,10 +203,10 @@ ReviewBoost — AI-Powered Google Review Growth Platform
     width:100%;
     border-radius:30px;
 
-    border:1px solid rgba(255,255,255,.08);
+    border:1px solid var(--paper3);
 
     box-shadow:
-    0 40px 90px rgba(0,0,0,.45);
+    0 40px 90px rgba(15,25,40,.18);
 }
 
 .hero-overlay{
@@ -214,7 +217,7 @@ ReviewBoost — AI-Powered Google Review Growth Platform
 
     background:linear-gradient(
         135deg,
-        rgba(15,23,42,.45),
+        rgba(0,62,108,.35),
         transparent 60%
     );
 }
@@ -222,17 +225,15 @@ ReviewBoost — AI-Powered Google Review Growth Platform
 .float-card{
     position:absolute;
 
-    background:rgba(15,23,42,.92);
+    background:#fff;
 
-    backdrop-filter:blur(16px);
-
-    border:1px solid rgba(255,255,255,.08);
+    border:1px solid var(--paper3);
 
     border-radius:22px;
 
     padding:18px 20px;
 
-    box-shadow:0 20px 60px rgba(0,0,0,.35);
+    box-shadow:0 20px 55px rgba(15,25,40,.14);
 }
 
 .float-card.card-1{
@@ -251,7 +252,7 @@ ReviewBoost — AI-Powered Google Review Growth Platform
     font-size:.72rem;
     text-transform:uppercase;
     letter-spacing:.08em;
-    color:#94a3b8;
+    color:var(--ink3);
 
     margin-bottom:8px;
 }
@@ -263,7 +264,7 @@ ReviewBoost — AI-Powered Google Review Growth Platform
 
 .float-card p{
     font-size:.8rem;
-    color:#cbd5e1;
+    color:var(--ink2);
     line-height:1.6;
 }
 
@@ -271,10 +272,11 @@ ReviewBoost — AI-Powered Google Review Growth Platform
     font-size:2rem;
     font-weight:800;
     margin-bottom:6px;
+    color:var(--navy);
 }
 
 .float-trend{
-    color:#34d399;
+    color:var(--green);
     font-size:.8rem;
     font-weight:600;
 }
@@ -313,11 +315,12 @@ ReviewBoost — AI-Powered Google Review Growth Platform
 .business-card h3{
     font-size:1rem;
     margin-bottom:8px;
+    color:var(--ink);
 }
 
 .business-card p{
     font-size:.82rem;
-    color:#94a3b8;
+    color:var(--ink3);
     line-height:1.6;
 }
 
@@ -362,7 +365,8 @@ ReviewBoost — AI-Powered Google Review Growth Platform
 
     border-radius:18px;
 
-    background:linear-gradient(135deg,#8b5cf6,#06b6d4);
+    background:linear-gradient(135deg,#fe6101,#003e6c);
+    color:#fff;
 
     display:flex;
     align-items:center;
@@ -376,10 +380,11 @@ ReviewBoost — AI-Powered Google Review Growth Platform
 
 .step-card h3{
     margin-bottom:14px;
+    color:var(--ink);
 }
 
 .step-card p{
-    color:#94a3b8;
+    color:var(--ink3);
     font-size:.9rem;
     line-height:1.8;
 }
@@ -415,7 +420,7 @@ ReviewBoost — AI-Powered Google Review Growth Platform
 
     border-radius:18px;
 
-    background:rgba(124,58,237,.12);
+    background:var(--gold-light);
 
     display:flex;
     align-items:center;
@@ -428,10 +433,11 @@ ReviewBoost — AI-Powered Google Review Growth Platform
 
 .feature-card h3{
     margin-bottom:12px;
+    color:var(--ink);
 }
 
 .feature-card p{
-    color:#94a3b8;
+    color:var(--ink3);
     line-height:1.8;
     font-size:.9rem;
 }
@@ -454,7 +460,7 @@ ReviewBoost — AI-Powered Google Review Growth Platform
 .analytics-image img{
     width:100%;
     border-radius:28px;
-    border:1px solid rgba(255,255,255,.08);
+    border:1px solid var(--paper3);
 }
 
 .analytics-content ul{
@@ -471,12 +477,12 @@ ReviewBoost — AI-Powered Google Review Growth Platform
     display:flex;
     gap:12px;
 
-    color:#cbd5e1;
+    color:var(--ink2);
     line-height:1.7;
 }
 
 .analytics-content li span{
-    color:#8b5cf6;
+    color:var(--gold-dark);
     font-weight:700;
 }
 
@@ -506,7 +512,7 @@ ReviewBoost — AI-Powered Google Review Growth Platform
 }
 
 .testimonial p{
-    color:#cbd5e1;
+    color:var(--ink2);
     line-height:1.9;
     margin-bottom:24px;
 }
@@ -526,10 +532,11 @@ ReviewBoost — AI-Powered Google Review Growth Platform
 
 .testimonial-user h4{
     font-size:.95rem;
+    color:var(--ink);
 }
 
 .testimonial-user span{
-    color:#94a3b8;
+    color:var(--ink3);
     font-size:.8rem;
 }
 
@@ -560,8 +567,8 @@ ReviewBoost — AI-Powered Google Review Growth Platform
 }
 
 .plan.popular{
-    border:1px solid rgba(139,92,246,.55);
-    box-shadow:0 0 0 1px rgba(139,92,246,.2);
+    border:1px solid rgba(254,97,1,.45);
+    box-shadow:0 0 0 1px rgba(254,97,1,.15);
 }
 
 .popular-tag{
@@ -570,7 +577,7 @@ ReviewBoost — AI-Powered Google Review Growth Platform
     left:50%;
     transform:translateX(-50%);
 
-    background:linear-gradient(to right,#8b5cf6,#06b6d4);
+    background:linear-gradient(to right,#fe6101,#003e6c);
 
     color:#fff;
 
@@ -586,7 +593,7 @@ ReviewBoost — AI-Powered Google Review Growth Platform
     text-transform:uppercase;
     letter-spacing:.08em;
 
-    color:#94a3b8;
+    color:var(--ink3);
 
     margin-bottom:14px;
 }
@@ -595,15 +602,16 @@ ReviewBoost — AI-Powered Google Review Growth Platform
     font-size:3rem;
     font-weight:800;
     margin-bottom:8px;
+    color:var(--ink);
 }
 
 .plan-price span{
     font-size:1rem;
-    color:#94a3b8;
+    color:var(--ink3);
 }
 
 .plan-desc{
-    color:#94a3b8;
+    color:var(--ink3);
     line-height:1.7;
 
     margin-bottom:26px;
@@ -623,12 +631,12 @@ ReviewBoost — AI-Powered Google Review Growth Platform
     display:flex;
     gap:12px;
 
-    color:#cbd5e1;
+    color:var(--ink2);
     font-size:.92rem;
 }
 
 .plan-features li span{
-    color:#34d399;
+    color:var(--green);
     font-weight:700;
 }
 
@@ -657,7 +665,7 @@ ReviewBoost — AI-Powered Google Review Growth Platform
 
     border-radius:50%;
 
-    background:rgba(124,58,237,.18);
+    background:rgba(254,97,1,.12);
 
     top:-220px;
     right:-120px;

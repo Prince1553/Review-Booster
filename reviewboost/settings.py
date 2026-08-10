@@ -126,7 +126,10 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-ANTHROPIC_API_KEY = os.environ.get('ANTHROPIC_API_KEY', '')
+# ANTHROPIC_API_KEY = os.environ.get('ANTHROPIC_API_KEY', '')
+
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
+GEMINI_MODEL   = 'gemini-2.0-flash-lite'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/'
